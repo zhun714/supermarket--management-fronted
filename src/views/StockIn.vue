@@ -2,8 +2,8 @@
     <div class="stockIn">
 		<el-card class="box-card">
         <div class="header">
-            <el-button @click="change(0)">入库记录</el-button>
-            <el-button @click="change(1)">商品入库</el-button>
+            <el-button type="primary" @click="change(0)" round>入库记录</el-button>
+            <el-button type="warning" @click="change(1)" round>商品入库</el-button>
         </div>
         <div :class="[isShow == 0?'mainActive':'main']" id="show1">
             <div>

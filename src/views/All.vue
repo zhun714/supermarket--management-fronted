@@ -85,13 +85,13 @@
 			shutDown(){
 				http({
 					method:'get',
-					url:'/logout'
+					url:'/toLoginOut'
 				}).then((res)=>{
 					console.log('side',res)
 					if(res.data.code === 200){
 						console.log(res)
 						this.$router.push("/")
-						window.localStorage.removeItem("userName")
+						window.localStorage.removeItem("token")
 					}else{
 						alert("失败")
 					}

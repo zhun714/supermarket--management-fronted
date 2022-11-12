@@ -1,21 +1,24 @@
-
 <template>
 	<div id="main">
 		<div class="body">
 			<div class="container">
 				<div class="box">
-					<h2>超市后台管理系统</h2>
+					<h2>商店后台管理系统</h2>
+					<div style="text-align: center;">
+						<span style="color: red;">{{err}}</span>
+					</div>
 					<form>
 						<div class="inputBox">
-							<input type="text" name="" required="">
+							<input type="text" name="" required="" v-model="userName">
 							<label>用户名</label>
 						</div>
 						<div class="inputBox">
-							<input type="password" name="" required="">
+							<input type="password" name="" required="" v-model="password">
 							<label>密码</label>
 						</div>
 						<div class="submit">
-							<input type="submit" name="" value="登录"/>
+							 <!--  @click.prevent="btn"-->
+							<input type="submit" value="登录" @click.prevent="login" />
 						</div>
 					</form>
 				</div>
@@ -23,7 +26,6 @@
 		</div>
 	</div>
 </template>
-
 <script>
     export default {
         name: "Login"
@@ -33,7 +35,6 @@
 <style >
 	body{
 		margin: 0;
-
 	}
 	#main{
 		margin: 0;
@@ -43,8 +44,6 @@
 		background-size: cover;
 		height:100vh
 	}
-
-
 ​	
 	.box {
 		position: absolute;
@@ -119,103 +118,66 @@
 		text-align: center;
 	}
 </style>
-<template>
-	<div id="main">
-		<div class="body">
-			<div class="container">
-				<div class="box">
-					<h2>商店后台管理系统</h2>
-					<div style="text-align: center;">
-						<span style="color: red;">{{err}}</span>
-					</div>
-					<form>
-						<div class="inputBox">
-							<input type="text" name="" required="" v-model="userName">
-							<label>用户名</label>
-						</div>
-						<div class="inputBox">
-							<input type="password" name="" required="" v-model="password">
-							<label>密码</label>
-						</div>
-						<div class="submit">
-							 <!--  @click.prevent="btn"-->
-							<input type="submit" value="登录" @click.prevent="login" />
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
-</template>
 
 <script>
-	import http from '../util/http.js' 
-    export default {
-        name: "Login",
-		data() {
-			return{
-				userName:'',
-				password:'',
-				err:''
-			}
-		},
-		methods: {
-			login(){
-				http({
-					method: 'post',
-					url: 'tologin',
-					params: {
-						username: this.userName,
-						password: this.password
-					}
-				}).then(res=> {
-					console.log(res)
-					if(res.data.code === 200){
-						window.localStorage.setItem("userName", this.userName)
-						this.$router.replace('/all')
-						console.log(this.userName)
-						console.log(this.password)
-						console.log(typeof(this.userName))
-					}
-					else{
-						this.err = "";
-						this.$router.replace("/")
-						this.err=this.err.concat("账号或密码错误")
-					}
-				}).catch(err=> {
-					console.log("error")
-					/* console.log(this.err) */
-				})
-
-			}
-			
-		},
-
-		/* ,
-		created() {
-			let _this =  this;
+import http from '../util/http.js' 
+export default {
+	name: "Login",
+	data() {
+		return{
+			userName:'',
+			password:'',
+			err:''
+		}
+	},
+	methods: {
+		login(){
 			http({
 				method: 'post',
 				url: 'tologin',
 				params: {
-					username: "liuhai",
-					password: "123456"
+					username: this.userName,
+					password: this.password
 				}
-			}).then(function(res) {
-				console.log(res.data)
-			}).catch(function() {
-				console.log("error！");
+			}).then(res=> {
+				
+				console.log('login',res.data)
+				console.log('token',res.data.data.token)
+				if(res.data.code === 200){
+					
+					window.localStorage.setItem("token",res.data.data.token);
+					window.localStorage.setItem("userName", this.userName)
+					this.$router.replace('/all')
+					console.log(this.userName)
+					console.log(this.password)
+					console.log(typeof(this.userName))
+				}
+				else{
+					this.err = "";
+					this.$router.replace("/")
+					this.err=this.err.concat("账号或密码错误")
+				}
+			}).catch(err=> {
+				console.log("error")
+				/* console.log(this.err) */
 			})
-			
-		} */
-	}
+
+		}
+		
+	},
+
+	
+	created() {
+		if (localStorage.getItem("token")) window.localStorage.removeItem("token")
+		
+	} 
+}
 
 </script>
 
 <style scoped>
 	body{
 		margin: 0;
-
 	}
 	#main{
 		margin: 0;
@@ -225,9 +187,6 @@
 		background-size: cover;
 		height:100vh
 	}
-
-
-
 	.box {
 		position: absolute;
 		top: 50%;
