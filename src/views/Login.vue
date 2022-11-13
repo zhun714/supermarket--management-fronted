@@ -40,7 +40,7 @@
 		margin: 0;
 		padding: 0;
 		font-family: sans-serif;
-		background-image:url("../assets/img/supermaket.png");
+		background-image:url("../assets/img/R-C.jpg");
 		background-size: cover;
 		height:100vh
 	}
@@ -73,7 +73,7 @@
 	.box .inputBox input {
 		width: 100%;
 		padding: 10px 0;
-		font-side: 16px;
+		font-size: 16px;
 		color: #fff;
 		letter-spacing: 1px;
 		margin-bottom: 30px;
@@ -183,7 +183,7 @@ export default {
 		margin: 0;
 		padding: 0;
 		font-family: sans-serif;
-		background-image:url("../assets/img/supermaket.png");
+		background-image:url("../assets/img/R-C.jpg");
 		background-size: cover;
 		height:100vh
 	}
