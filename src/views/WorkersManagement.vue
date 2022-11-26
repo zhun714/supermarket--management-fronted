@@ -70,7 +70,7 @@
 							<el-button @click="startModify(scope)" circle type="primary" class="el-icon-edit" size="mini"></el-button>
 							</el-tooltip>
 							<el-tooltip effect="dark" content="删除" placement="top-start">
-							<el-button @click="deleteOneWorker(scope.row)" type="danger" circle class="el-icon-delete" size="mini"></el-button>
+							<el-button @click="deleteModify(scope.row.id)" type="danger" circle class="el-icon-delete" size="mini"></el-button>
 							</el-tooltip>
 
 						</template>
@@ -79,14 +79,31 @@
 			</div>
 			<!-- 修改角色弹框 -->
 			<div id="modify">
+				<el-dialog title="删除员工" :visible.sync="delemployee.modify" width="30%">
+			
+					<el-form ref="form" label-width="80px">
+						
+						<el-form-item label="解雇理由">
+							<el-input v-model="delemployee.reason" placeholder="请输入解雇理由最少15字" clearable minlength="15"></el-input>
+						</el-form-item>
+						
+					</el-form>
+			
+					<span slot="footer" class="dialog-footer">
+						<el-button @click="delcancelModify">取 消</el-button>
+						<el-button type="primary" @click="deleteOneWorker">发 送</el-button>
+					</span>
+				</el-dialog>
+			</div>
+			<div id="modify">
 				<el-dialog title="编辑员工" :visible.sync="modifyWorker.modify" width="50%">
 			
 					<el-form ref="form" label-width="80px">
-						<el-alert>
+						
 						<el-form-item label="员工名">
 							<el-input v-model="modifyWorker.name" placeholder="请输入员工名" clearable maxlength="6"></el-input>
 						</el-form-item>
-						</el-alert>
+						
 						<el-form-item label="密码">
 							<el-input v-model="modifyWorker.pwd" show-password placeholder="请输入密码" clearable maxlength="12"></el-input>
 						</el-form-item>
@@ -157,7 +174,11 @@
 					addFrame: false,
 				},
 				// 多选的状态
-
+				delemployee:{
+					id:'',
+					reason:'',
+					modify:false
+				},
 				//多选的结果数组
 				hasChecked: [],
 				// 多选是否有数据被选中的标志
@@ -472,7 +493,10 @@
 			},
 			/////////////////////////////////////////////
 			//修改
-
+			deleteModify(val){
+				this.delemployee.id=val;
+				this.delemployee.modify=true
+			},
 			// 启动修改
 			startModify(val) {
 				console.log(this.workersData);
@@ -485,8 +509,15 @@
 				}
 				console.log(this.modifyWorker.modifyCurrentRole);
 			},
-			
+		
 			// 修改前的状态
+			delcancelModify(){
+				this.delemployee={
+					id:'',
+					reason:'',
+					modify:false
+				}
+			},
 			cancelModify() {
 				this.modifyWorker={
 					modifyRoleIndex:'',
@@ -496,6 +527,7 @@
 					modifyCurrentRole:''
 				}
 			},
+			
 			// 提交修改
 			submitModify() {
 				console.log(this.modifyWorker);
@@ -585,10 +617,11 @@
 
 			////////////////////////////////////////////////////
 			// 单条数据删除
-			deleteOneWorker(val) {
+			deleteOneWorker() {
 				// 删除的员工的id
-				let delWorkerId = val.id;
-				this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
+				let delWorkerId = this.delemployee.id;
+				let delreason = this.delemployee.reason;
+				this.$confirm('此操作将永久删除该员工, 是否继续?', '提示', {
 					confirmButtonText: '确定',
 					cancelButtonText: '取消',
 					type: 'warning'
@@ -600,7 +633,8 @@
 						url: deleteOneWorker,
 						params: {
 							userId: delWorkerId,
-							pageNo: this.currentPage
+							pageNo: this.currentPage,
+							value: delreason
 						}
 					}).then((res) => {
 						console.log(res);
@@ -620,6 +654,7 @@
 					})
 
 				})
+				this.delcancelModify()
 			}
 		},
 

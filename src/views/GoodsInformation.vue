@@ -20,6 +20,8 @@
 					</el-table-column>
 					<el-table-column prop="name" label="商品分类" >
 					</el-table-column>
+					<el-table-column prop="price" label="商品单价" >
+					</el-table-column>
 					<el-table-column prop="shelfLife" label="保质日期" >
 					</el-table-column>
 					<!--<el-table-column
@@ -103,6 +105,9 @@
 						</el-option>
 					</el-select>
 					<br>
+					<span> 商品单价：</span>
+					<el-input v-model="form.price" placeholder="请输入商品单价" style="width:50%;margin-left: 50px;"></el-input>
+					<br>
 					<span> 保质期：</span>
 					
 					<el-input v-model="form.goodsTime" placeholder="请输入商品保质期/天" style="width:50%;margin-left: 66px;"></el-input>
@@ -180,7 +185,8 @@
 					delivery: false,
 					type: [],
 					resource: '',
-					desc: ''
+					desc: '',
+					price:''
 				},
 				formLabelWidth: '120px',
 				dialogVisible: false,
@@ -363,6 +369,7 @@
 						goodsName:this.form.goodsName,
 						shelfLife: this.form.goodsTime,
 						goodsDesc: this.form.desc,
+						price:this.form.price,
 						name: this.types,
 						productTime: this.form.productTime
 					}

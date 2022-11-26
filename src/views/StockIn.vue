@@ -28,7 +28,7 @@
                             label="入库数量">
                     </el-table-column>
                     <el-table-column
-                            prop="time"
+                            prop="dataTime"
                             label="入库日期">
                     </el-table-column>
                     <el-table-column

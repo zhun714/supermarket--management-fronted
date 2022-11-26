@@ -13,6 +13,12 @@ const routes = [
 		redirect: "/all/role",
 		children:[
 			{
+				path: '/all/home',
+				name: '首页管理',
+				icon: 'el-icon-s-home',
+				component: () => import( '../views/home.vue')
+			},
+			{
 				path: '/all/role',
 				name: '角色管理',
 				icon: 'el-icon-user',

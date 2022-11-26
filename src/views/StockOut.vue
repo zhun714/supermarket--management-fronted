@@ -32,7 +32,7 @@
                            >
                     </el-table-column>
                     <el-table-column
-                            prop="time"
+                            prop="dataTime"
                             label="出库日期"
                             >
                     </el-table-column>
