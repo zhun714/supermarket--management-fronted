@@ -5,22 +5,34 @@
 				<div class="baseOperate">
 					<el-button type="primary" @click="addForm.addFrame=true" round class="el-icon-plus">增 加</el-button>
 					<el-button type="warning" :disabled="isChecked" round @click="deleteMulti">批量删除</el-button>
-					<!-- 增加员工弹框 -->
+					<!-- 增加弹框 -->
 					<div id="addFrame">
 						<el-dialog title="增加员工" :visible.sync="addForm.addFrame" width="50%">
 
 							<el-form ref="form" label-width="80px" :model="addForm.worker">
 								
-								<el-alert>
+								<el-form-item label="员工账号">
+									<el-input v-model="addForm.worker.usercode" placeholder="请输入账号" clearable maxlength="12"></el-input>
+								</el-form-item>
+
 								<el-form-item label="员工名">
 									<el-input v-model="addForm.worker.name" placeholder="请输入员工名" clearable maxlength="6"></el-input>
 								</el-form-item>
 								
-								</el-alert>
 								<el-form-item label="密码">
 									<el-input v-model="addForm.worker.pwd" show-password placeholder="请输入密码" clearable maxlength="12"></el-input>
 								</el-form-item>
 
+								<el-form-item label="薪水">
+									<el-input v-model="addForm.worker.salary" placeholder="请输入薪水(不输入即为默认薪水)" clearable maxlength="20"></el-input>
+								</el-form-item>
+								
+
+								<el-form-item label="邮箱">
+									<el-input v-model="addForm.worker.email" placeholder="请输入邮箱" clearable maxlength="20"></el-input>
+								</el-form-item>
+								
+								
 								<el-form-item label="设置角色">
 									<el-radio-group v-model="addForm.worker.role">
 										<el-radio v-for="(role) in roles" :label="role.id" :key="role.id"
@@ -57,19 +69,26 @@
 					</el-table-column>
 					<el-table-column prop="id" label="编号">
 					</el-table-column>
+					<el-table-column prop="userCode" label="用户账号">
+					</el-table-column>
 					<el-table-column prop="userName" label="用户名">
 					</el-table-column>
 
-					<el-table-column prop="password" label="密码" show-overflow-tooltip>
+					<el-table-column prop="email" label="邮箱">
 					</el-table-column>
 					<el-table-column prop="role.rolename" label="角色">
 					</el-table-column>
+					<el-table-column prop="salary" label="薪水">
+					</el-table-column>
 					<el-table-column label="操作">
 						<template slot-scope="scope">
+							<el-tooltip effect="dark" content="发邮件" placement="top-start">
+							<el-button @click="emailModify(scope.row)" circle type="primary" class="el-icon-s-comment" size="mini"></el-button>
+							</el-tooltip>
 							 <el-tooltip effect="dark" content="编辑" placement="top-start">
 							<el-button @click="startModify(scope)" circle type="primary" class="el-icon-edit" size="mini"></el-button>
 							</el-tooltip>
-							<el-tooltip effect="dark" content="删除" placement="top-start">
+							<el-tooltip effect="dark" content="解雇" placement="top-start">
 							<el-button @click="deleteModify(scope.row.id)" type="danger" circle class="el-icon-delete" size="mini"></el-button>
 							</el-tooltip>
 
@@ -77,9 +96,9 @@
 					</el-table-column>
 				</el-table>
 			</div>
-			<!-- 修改角色弹框 -->
+			<!-- 解雇用户弹框 -->
 			<div id="modify">
-				<el-dialog title="删除员工" :visible.sync="delemployee.modify" width="30%">
+				<el-dialog title="解雇员工" :visible.sync="delemployee.modify" width="30%">
 			
 					<el-form ref="form" label-width="80px">
 						
@@ -100,13 +119,26 @@
 			
 					<el-form ref="form" label-width="80px">
 						
-						<el-form-item label="员工名">
+						<el-form-item label="员工账号">
+							<el-input v-model="modifyWorker.usercode" placeholder="请输入账号" clearable maxlength="12" readonly></el-input>
+						</el-form-item>
+
+						<el-form-item label="员工姓名">
 							<el-input v-model="modifyWorker.name" placeholder="请输入员工名" clearable maxlength="6"></el-input>
 						</el-form-item>
 						
+						<el-form-item label="邮箱">
+							<el-input v-model="modifyWorker.email" placeholder="请输入邮箱" clearable maxlength="20"></el-input>
+						</el-form-item>
+
 						<el-form-item label="密码">
 							<el-input v-model="modifyWorker.pwd" show-password placeholder="请输入密码" clearable maxlength="12"></el-input>
 						</el-form-item>
+
+						<el-form-item label="薪水">
+							<el-input v-model="modifyWorker.salary" placeholder="请输入薪水" clearable maxlength="6"></el-input>
+						</el-form-item>
+
 						<el-form-item label="角色">
 							<el-radio-group v-model="modifyWorker.modifyCurrentRole">
 								<el-radio v-for="(role) in roles" :label="role.id" :key="role.id"
@@ -165,7 +197,10 @@
 				addForm: {
 					// 添加的员工
 					worker: {
+						salary:"",
+						usercode:"",
 						name: "",
+						email:"",
 						pwd: "",
 						role: ""
 					},
@@ -204,6 +239,9 @@
 					modify: false,
 					name: "",
 					pwd: "",
+					salary:"",
+					usercode:"",
+					email:"",
 					// 修改的目标角色
 					modifyCurrentRole: ""
 				}
@@ -261,6 +299,47 @@
 				let i = 0;
 				val.forEach(ob => {
 					this.hasChecked[i++] = ob.id
+				})
+			},
+			emailModify(val) {
+				// 根据员工的id发邮件
+				let delWorkerId = val.id;
+				this.$prompt('发送内容', '提示', {
+					confirmButtonText: '确定',
+					cancelButtonText: '取消',
+                    inputErrorMessage: '输入不能为空',
+					inputValidator: (value) => {       // 点击按钮时，对文本框里面的值进行验证
+                        if(!value) {
+                            return '输入不能为空';
+                        }
+					}
+				}).then((value) => {
+					http({
+						method: 'post',
+						url: "/email",
+						params: {
+							value: value.value,
+							userId: delWorkerId,
+						}
+					}).then((res) => {
+						console.log(res);
+						if (res.data.code == 200) {
+							this.$message({
+								type: 'success',
+								message: '发送成功!'
+							});
+						}else{
+							this.$message({
+								type: 'error',
+								message: res.data.msg
+							});
+						}
+					}).catch(() => {
+						this.$message({
+							type: 'error',
+							message: '服务器错误'
+						});
+					})
 				})
 			},
 			// 批量删除
@@ -345,6 +424,8 @@
 				let flagN = validator.vCharLength(this.addForm.worker.name, 1, 6);
 				let flagP = validator.vCharLength(this.addForm.worker.pwd, 1, 12);
 				let flagR = typeof(this.addForm.worker.role) === "number" ? true : false;
+				var verify = /^\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}/;
+				let flagM = verify.test(this.addForm.worker.email);
 				// 验证提交信息
 				if (!(flagN && flagP)) {
 					this.$message({
@@ -358,13 +439,22 @@
 						message: '请选择角色！'
 					});
 					return;
-				} else {
+				} else if(!flagM){
+					this.$message({
+						type: 'error',
+						message: '邮箱格式错误！'
+					});
+					return;
+				}else {
 					// 验证通过
 
 					http({
 						method: 'post',
 						url: addWorker,
 						data: {
+							salary: this.addForm.worker.salary,
+							email: this.addForm.worker.email,
+							userCode: this.addForm.worker.usercode,
 							password: this.addForm.worker.pwd,
 							userName: this.addForm.worker.name,
 							roleId: this.addForm.worker.role
@@ -503,11 +593,13 @@
 				this.modifyWorker={
 					currentModifyWorker:val.row.id,
 					modify:true,
+					usercode:this.workersData[val.$index].userCode,
+					email:this.workersData[val.$index].email,
+					salary:this.workersData[val.$index].salary,
 					name:this.workersData[val.$index].userName,
 					pwd:this.workersData[val.$index].password,
 					modifyCurrentRole:this.workersData[val.$index].roleId
 				}
-				console.log(this.modifyWorker.modifyCurrentRole);
 			},
 		
 			// 修改前的状态
@@ -520,23 +612,40 @@
 			},
 			cancelModify() {
 				this.modifyWorker={
-					modifyRoleIndex:'',
-					modify:false,
-					name:'',
-					pwd:'',
-					modifyCurrentRole:''
+					modifyRoleIndex: '',
+					// 修改角色的弹窗变量
+					modify: false,
+					name: "",
+					pwd: "",
+					salary:"",
+					usercode:"",
+					email:"",
+					// 修改的目标角色
+					modifyCurrentRole: ""
 				}
 			},
 			
 			// 提交修改
 			submitModify() {
 				console.log(this.modifyWorker);
+				var verify = /^\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}/;
+				let flagM = verify.test(this.modifyWorker.email);
+				if(!flagM){
+					this.$message({
+							type: 'error',
+							message: '邮箱格式错误'
+						})
+					return;
+				}
 				http({
 					method: 'post',
 					url: modify,
 					data: JSON.stringify({
+						userCode: this.modifyWorker.usercode,
+						email: this.modifyWorker.email,
+						salary: this.modifyWorker.salary,
 						password: this.modifyWorker.pwd,
-						userName:this.modifyWorker.name ,
+						userName:this.modifyWorker.name,
 						id: this.modifyWorker.currentModifyWorker,
 						roleId: this.modifyWorker.modifyCurrentRole
 					})
