@@ -10,7 +10,7 @@ const routes = [
 		path:'/all',
 		name:'guanli',
 		component: () => import('../views/All.vue'),
-		redirect: "/all/role",
+		redirect: "/all/home",
 		children:[
 			{
 				path: '/all/home',
@@ -54,6 +54,12 @@ const routes = [
 				name: '商品信息',
 				icon: 'el-icon-postcard',
 				component: () => import('../views/GoodsInformation.vue')
+			},
+			{
+				path: '/all/OrderInformation',
+				name: '订单管理',
+				icon: 'el-icon-s-shop',
+				component: () => import( '../views/OrderInformation.vue')
 			},
 			{
 				path: '/all/systemNotice',

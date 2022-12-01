@@ -42,7 +42,7 @@
           </template>
         </el-table-column>
         <el-table-column
-                prop="time"
+                prop="dataTime"
                 label="日期"
                 width="180">
           <template slot="header" >

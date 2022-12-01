@@ -40,10 +40,10 @@
                         >
                         <template slot="header" >
                             <div style="display:flex">
-                                <el-input
+                                <input
                                     v-model="searchMes"
-                                    size="mini"
-                                    placeholder="输入商品关键字搜索" style="width:240px;margin-right: 5px"/>
+                                    
+                                    placeholder="输入商品关键字搜索" style="width:150px;margin-right: 5px;border-radius: 5px;">
                             <el-button icon="el-icon-search" circle @click="click(searchMes)"></el-button>
                             </div>
                             

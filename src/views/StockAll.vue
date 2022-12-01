@@ -30,12 +30,12 @@
                 <el-table-column>
                     <template slot="header" >
                         <div style="display:flex">
-                            <el-input
+                            <input
                                 v-model="search"
-                                style="width: 2000px"
-                                placeholder="输入产品名称搜索"/>
-                        <el-button icon="el-icon-search" circle @click="searchMes(search)"></el-button>
-                    </div>
+                                style="width: 200px;border-radius: 5px;"
+                                placeholder="输入产品名称搜索">
+                            <el-button icon="el-icon-search" circle @click="searchMes(search)"></el-button>
+                        </div>
                         
                     </template>
                 </el-table-column>

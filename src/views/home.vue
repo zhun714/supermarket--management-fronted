@@ -17,12 +17,18 @@
 			</div>
 			</el-card>
 			<div class = "Log">
-            <el-table :data="tableData" stripe border height="403px" style="width: 100%">
-				<el-table-column prop="time" label="时间" width="180px" align = center>
+            <div>
+				<div class="header">
+					<span >在线用户列表：</span>
+				</div>
+				
+				<el-table :data="tableData" stripe border height="350px" style="width: 100%">
+				<el-table-column prop="userName" label="姓名"  align = center>
 				</el-table-column>
-				<el-table-column  prop="message" m label="内容" width="340px" align = center>
+				<el-table-column  prop="role.rolename" m label="角色" align = center>
 				</el-table-column>
             </el-table>
+			</div>
 			</div> 
 		  </div>
 		</el-col>
@@ -85,13 +91,13 @@ import { mapState } from "vuex";
 				color: '#ffb980'
 				},
 				{
-				name: '成绩数量',
+				name: '商品数量',
 				value: 0,
 				icon: 's-goods',
 				color: '#5ab1ef'
 				},
 				{
-				name: '日志数量',
+				name: '订单数量',
 				value: 0,
 				icon: 'success',
 				color: '#2ec7c9'
@@ -115,10 +121,10 @@ import { mapState } from "vuex";
 					this.user.username=res.data.data.username;
 					this.user.rolename=res.data.data.role;
 					this.countData[0].value=res.data.data.online;
-					this.countData[1].value=res.data.data.countUser;
-					this.countData[2].value=res.data.data.countScore;
-					this.countData[3].value=res.data.data.countLog;
-					this.tableData = res.data.data.Log;
+					this.countData[1].value=res.data.data.userNumber;
+					this.countData[2].value=res.data.data.goodsNumber;
+					this.countData[3].value=res.data.data.orderNumber;
+					this.tableData = res.data.data.onlineUser;
 				}
 			}).catch(()=>{
 				this.$message({
@@ -134,7 +140,12 @@ import { mapState } from "vuex";
 	 
 	<!-- Add "scoped" attribute to limit CSS to this component only -->
 	<style lang="less" scoped>
-	.el-card__body {
+	.header{
+		font-size: 22px;
+		margin:10px ;
+	}
+
+ 	.el-card__body {
 		padding: 10px;
 	}
 	.userCard{
