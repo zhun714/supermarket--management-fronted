@@ -32,7 +32,7 @@
                         <div style="display:flex">
                             <input
                                 v-model="search"
-                                style="width: 200px;border-radius: 5px;"
+                                style="width: 150px;border-radius: 5px;"
                                 placeholder="输入产品名称搜索">
                             <el-button icon="el-icon-search" circle @click="searchMes(search)"></el-button>
                         </div>

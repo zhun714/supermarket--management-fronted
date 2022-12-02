@@ -17,12 +17,18 @@
 			</div>
 			</el-card>
 			<div class = "Log">
-            <el-table :data="tableData" stripe border height="403px" style="width: 100%">
+            <div>
+				<div class="header"  style="font-size: 24px;margin:10px">
+					<span>当前在线列表：</span>
+				</div>
+				<el-table :data="tableData" stripe border height="350px" style="width: 105%;box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);">
 				<el-table-column prop="userName" label="姓名" width="180px" align = center>
 				</el-table-column>
 				<el-table-column  prop="role.rolename" m label="角色" width="340px" align = center>
 				</el-table-column>
             </el-table>
+
+			</div>
 			</div> 
 		  </div>
 		</el-col>
