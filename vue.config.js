@@ -14,10 +14,10 @@
 // };
 module.exports = {
      devServer: {
-         port: 8080,
+         port: 8089,
          proxy: {
              '/api/': {
-              target:"http://49.234.32.149:8085/",
+              target:"http://localhost:8085/",
                  changeOrigin: true, //是否选择性改变跨域
                  pathRewrite:{
                      '^/api':''  //做替换

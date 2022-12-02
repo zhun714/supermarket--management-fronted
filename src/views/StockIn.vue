@@ -65,10 +65,10 @@
                 <el-dialog title="入库商品信息修正" :visible.sync="dialogFormVisible">
                     <el-form>
                         <el-form-item label="商品名称" :label-width="formLabelWidth">
-                            <el-input v-model="mesForm.goodsName"></el-input>
+                            <el-input v-model="mesForm.goodsName" readonly></el-input>
                         </el-form-item>
                         <el-form-item label="商品分类" :label-width="formLabelWidth">
-                            <el-input v-model="mesForm.name" ></el-input>
+                            <el-input v-model="mesForm.name" readonly></el-input>
                         </el-form-item>
                         <el-form-item label="入库数量" :label-width="formLabelWidth">
                             <el-input v-model="mesForm.goodsAmount" ></el-input>
@@ -247,9 +247,21 @@
                         id: this.tableData[val.$index].id
                     }
                 }).then((res)=>{
+                    if (res.data.code == 200){
+                        this.tableData.splice(val.$index,1);  //删除点击的那一行
+                        this.$message({
+                        type: 'success',
+                        message: '删除成功!'
+                    });
+                    }
+                    else{
+                        this.$message({
+                        type: 'error',
+                        message: res.data.msg
+                    });
+                    }
 					console.log(this.tableData[val.$index].id);
                     console.log(res);
-                    this.tableData.splice(val.$index,1);  //删除点击的那一行
                     http({
                         method:'post',
                         url:'/checkin',
@@ -267,10 +279,6 @@
                             console.log(this.totalsize)
                         }
                     })
-                    this.$message({
-                        type: 'success',
-                        message: '删除成功!'
-                    });
                 }).catch(()=>{
                     console.log("删除失败");
                 })
@@ -345,18 +353,17 @@
                     method:'post',
                     url:'/checkinEdit',
                     data:JSON.stringify({
-                        amount:this.tableData[index.$index].amount,
+                        amount:this.mesForm.goodsAmount,
                         id:this.tableData[index.$index].id,
                         goodsId:this.tableData[index.$index].goods_id,
                         goodsName:this.mesForm.goodsName,
-                        num:this.mesForm.goodsAmount,
-                        checkinTime:this.mesForm.time
+                        time:this.mesForm.time
                     })
                 }).then((res)=>{
                     console.log(this.tableData[index.$index].amount)
                     if(JSON.parse(res.data.code) === 200){
                         this.$message({
-                            type: 'info',
+                            type: 'success',
                             message: "更新成功"
                         });
                         console.log(this.mesForm.goodsName)

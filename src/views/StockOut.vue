@@ -67,11 +67,11 @@
             <div id="edit">
                 <el-dialog title="出库商品信息修正" :visible.sync="dialogFormVisible">
                     <el-form>
-                        <el-form-item label="商品名称" :label-width="formLabelWidth">
-                            <el-input v-model="mesForm.goodsName"></el-input>
+                        <el-form-item label="商品名称" :label-width="formLabelWidth" >
+                            <el-input v-model="mesForm.goodsName" readonly></el-input>
                         </el-form-item>
                         <el-form-item label="商品分类" :label-width="formLabelWidth">
-                            <el-input v-model="mesForm.name"></el-input>
+                            <el-input v-model="mesForm.name" readonly></el-input>
                         </el-form-item>
                         <el-form-item label="出库数量" :label-width="formLabelWidth">
                             <el-input v-model="mesForm.goodsAmount"></el-input>
@@ -329,18 +329,17 @@
                     method:'post',
                     url:'/checkoutEdit',
                     data:JSON.stringify({
-                        amount:this.tableData[index.$index].amount,
+                        amount:this.mesForm.goodsAmount,
                         id:this.tableData[index.$index].id,
                         goodsId:this.tableData[index.$index].goods_id,
                         goodsName:this.mesForm.goodsName,
-                        num:this.mesForm.goodsAmount,
-                        checkoutTime:this.mesForm.time
+                        time:this.mesForm.time
                     })
                 }).then((res)=>{
                     console.log(this.tableData[index.$index].amount)
                     if(JSON.parse(res.data.code) === 200){
                         this.$message({
-                            type: 'info',
+                            type: 'success',
                             message: "更新成功"
                         });
                         console.log(this.mesForm.goodsName)
