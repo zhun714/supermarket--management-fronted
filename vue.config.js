@@ -17,7 +17,7 @@ module.exports = {
          port: 8080,
          proxy: {
              '/api/': {
-                 target:"http://49.234.32.149:8085/",
+              target:"http://49.234.32.149:8085/",
                  changeOrigin: true, //是否选择性改变跨域
                  pathRewrite:{
                      '^/api':''  //做替换

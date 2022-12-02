@@ -17,18 +17,12 @@
 			</div>
 			</el-card>
 			<div class = "Log">
-            <div>
-				<div class="header">
-					<span >在线用户列表：</span>
-				</div>
-				
-				<el-table :data="tableData" stripe border height="350px" style="width: 100%">
-				<el-table-column prop="userName" label="姓名"  align = center>
+            <el-table :data="tableData" stripe border height="403px" style="width: 100%">
+				<el-table-column prop="userName" label="姓名" width="180px" align = center>
 				</el-table-column>
-				<el-table-column  prop="role.rolename" m label="角色" align = center>
+				<el-table-column  prop="role.rolename" m label="角色" width="340px" align = center>
 				</el-table-column>
             </el-table>
-			</div>
 			</div> 
 		  </div>
 		</el-col>
@@ -58,7 +52,6 @@
 <script>
 	 // 引入http
 import http from '../util/http.js'
-
 import { mapState } from "vuex";
 	export default {
 	  name: "Index",
@@ -140,12 +133,7 @@ import { mapState } from "vuex";
 	 
 	<!-- Add "scoped" attribute to limit CSS to this component only -->
 	<style lang="less" scoped>
-	.header{
-		font-size: 22px;
-		margin:10px ;
-	}
-
- 	.el-card__body {
+	.el-card__body {
 		padding: 10px;
 	}
 	.userCard{
