@@ -15,6 +15,11 @@
 									clearable></el-input>
 								  </el-form-item>
 								 
+								  <el-form-item label="基本工资">
+								    <el-input v-model="inputRoleSalary" maxlength="6"
+									clearable></el-input>
+								  </el-form-item>
+
 								  	<el-form-item label="角色权限">
 								  		<el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
 								  		<el-checkbox-group v-model="checkRootList" @change="handleCheckedRootsChange">
@@ -145,7 +150,9 @@
 				roleData: [],
 				roots:[],
 				// 修改的角色的id
-				modifyRoleId:''
+				modifyRoleId:'',
+				//薪水
+				inputRoleSalary:""
 			}
 		},
 		mounted: function() {
@@ -225,6 +232,7 @@
 			// 取消添加
 			cancelAdd(){
 				this.inputRoleName='',
+				this.inputRoleSalary='',
 				this.checkAll=false;
 				this.add=false;
 				this.checkRootList =[];
@@ -243,7 +251,8 @@
 						url:role.addRole,
 						data:{
 							 permissionIdList:this.checkRootList,
-							 roleName:this.inputRoleName
+							 roleName:this.inputRoleName,
+							 salary:this.inputRoleSalary
 						}
 					}).then((res)=>{
 						console.log(res);
