@@ -238,7 +238,13 @@
                         id:this.tableData[val.$index].id
                     }
                 }).then((res)=>{
-                    this.tableData.splice(val.$index,1);  //删除点击的那一行数据
+                    if(res.data.code===200)this.tableData.splice(val.$index,1); 
+                    else{
+                        this.$message({
+						type: 'warning',
+						message: res.data.msg
+					});  
+                    } //删除点击的那一行数据
                     http({
                         method:'post',
                         url:'/checkout',
@@ -257,10 +263,7 @@
 
                 }
                     })
-                    this.$message({
-                        type:'success',
-                        message:'删除成功!'
-                    });
+                    
                 }).catch(()=>{
                     console.log("删除失败!");
                 })
