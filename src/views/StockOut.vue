@@ -249,7 +249,13 @@
                         if (res.status === 200){
                             this.tableData = res.data.data.stock;
                             this.totalsize = res.data.data.count;
-                        }
+                        }else{
+						this.$message({
+						type: 'warning',
+						message: res.data.msg
+					});
+
+                }
                     })
                     this.$message({
                         type:'success',

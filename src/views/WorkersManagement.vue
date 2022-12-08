@@ -100,10 +100,10 @@
 			<div id="modify">
 				<el-dialog title="解雇员工" :visible.sync="delemployee.modify" width="30%">
 			
-					<el-form ref="form" label-width="80px">
+					<el-form ref="form" label-width="80px" >
 						
-						<el-form-item label="解雇理由">
-							<el-input v-model="delemployee.reason" placeholder="请输入解雇理由最少15字" clearable minlength="15"></el-input>
+						<el-form-item label="解雇理由" >
+							<el-input v-model="delemployee.reason" type="textarea" placeholder="请输入解雇理由"  minlength="15" maxlength="100" show-word-limit></el-input>
 						</el-form-item>
 						
 					</el-form>
@@ -244,13 +244,20 @@
 					email:"",
 					// 修改的目标角色
 					modifyCurrentRole: ""
-				}
+				},
+				// rules: {
+				// 	reason: [
+				// 		{ required: true, message: '请输入解雇理由', trigger: 'blur' },
+				// 		{ min: 15, message: '解雇理由最少15字', trigger: 'change'  }
+				//       ],
+				// 	}
 
 			}
 		},
 		methods: {
 			// ///////////////////////////////////////////////
 			//根据页码请求数据
+			
 			getDataByPage(page) {
 				this.searchF.flag=false;
 				
@@ -370,7 +377,7 @@
 						} else {
 							this.$message({
 								type: 'error',
-								message: '删除失败!'
+								message: res.data.msg
 							});
 						}
 					}).catch(() => {
@@ -526,7 +533,7 @@
 						} else {
 							this.$message({
 								type: 'error',
-								message: '查询失败'
+								message: res.data.msg
 							});
 						}
 					}).catch(() => {
@@ -661,7 +668,7 @@
 					} else {
 						this.$message({
 							type: 'error',
-							message: '修改失败'
+							message: res.data.msg
 						});
 					}
 				}).catch(() => {
@@ -753,6 +760,12 @@
 							this.$message({
 								type: 'success',
 								message: '删除成功!'
+							});
+						}
+						else {
+							this.$message({
+								type: 'warning',
+								message: res.data.msg
 							});
 						}
 					}).catch(() => {

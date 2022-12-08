@@ -201,18 +201,26 @@
 						time: this.form.myData,
 						username: this.form.username
 					}
-				}).then(()=>{
+				}).then((res)=>{
 					this.form={
                     goodsAmount:'',
                     goodsName:'',
                     time:'',
                     username:'',
-                    id:''
+                    id:'',
+					
                 }
-					this.$message({
+					if(res.data.code===200)
+					{this.$message({
 						type: 'success',
 						message: '更新成功!'
 					});
+				}else{
+					this.$message({
+						type: 'warning',
+						message:res.data.msg
+					});
+				}
 					http({
 						method: 'post',
 						url: 'order',
@@ -259,7 +267,13 @@
 						id:this.tableData[scope.$index].id
 					}
 				}).then((res)=>{
-					this.tableData.splice(scope.$index-1,1)
+					if(res.data.code!==200) {
+								this.$message({
+									type: 'warning',
+									message: res.data.msg
+								});
+					}
+					 else this.tableData.splice(scope.$index-1,1)
 					console.log(this.tableData[scope.$index].id)
 					http({
 						method: 'post',
@@ -268,10 +282,11 @@
 							pageNo: 1
 						}
 					}).then((res) => {
-						// console.log(res);
-						if (res.status === 200) {
+						console.log(res);
+						if (res.data.code === 200) {
 							this.tableData = res.data.data.list;
 						}
+						
 					}).catch(() => {
 						alert("err")
 					})
@@ -307,8 +322,14 @@
 						pageNo: val
 					}
 				}).then((res) => {
-					if (res.status === 200) {
+					if (res.data.code === 200) {
 						this.tableData = res.data.data.list;
+					}
+					else {
+						this.$message({
+							type: 'warning',
+							message: res.data.msg
+						});
 					}
 				})
 			},
@@ -345,9 +366,15 @@
 						}
 					}).then((res) => {
 						// console.log(res);
-						if (res.status === 200) {
+						if (res.data.code === 200) {
 							this.tableData = res.data.data.list;
 						}
+						else {
+						this.$message({
+							type: 'warning',
+							message: res.data.msg
+						});
+					}
 					}).catch(() => {
 						alert("err")
 					})
@@ -370,9 +397,15 @@
 					}
 				}).then((res) => {
 					console.log('serach',res.data)
-					if (res.status === 200) {
+					if (res.data.code === 200) {
 						this.total=res.data.data.pages
 						this.tableData = res.data.data.orderList;
+					}
+					else {
+						this.$message({
+							type: 'warning',
+							message: res.data.msg
+						});
 					}
 				})
             },

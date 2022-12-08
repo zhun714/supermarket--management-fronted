@@ -98,10 +98,10 @@
                     }
                 }).then((res)=>{
                     if(res.status==200){
-                        console.log(res.data)
+          
                         console.log(res.data.data)
-                        this.tableData=res.data.data
-                        this.total = 1;
+                        this.tableData=res.data.data.stock
+                        this.total = res.data.data.pages;
                     }
                 })
             }

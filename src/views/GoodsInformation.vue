@@ -233,10 +233,18 @@
 					this.form.goodsTime=''
 					this.form.desc=''
 					this.types=''
-					this.$message({
+					if(res.data.code){
+						this.$message({
 						type: 'success',
 						message: '更新成功!'
 					});
+				}
+					else{
+						this.$message({
+						type: 'warning',
+						message: res.data.msg
+					});
+					}
 					http({
 						method: 'post',
 						url: initGF,
@@ -301,7 +309,13 @@
 						id:this.tableData[scope.$index].id
 					}
 				}).then((res)=>{
-					this.tableData.splice(scope.$index-1,1)
+					if(res.data.code===200) this.tableData.splice(scope.$index-1,1);
+					else{
+						this.$message({
+						type: 'warning',
+						message: res.data.msg
+					});
+				}
 					console.log(this.tableData[scope.$index].id)
 					http({
 						method: 'post',
